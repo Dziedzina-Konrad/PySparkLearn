@@ -23,3 +23,8 @@ class Friends:
       totalByAge = self.friendsByAge.mapValues(lambda x: (x, 1))
       self.averageByAge = totalByAge.reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])).mapValues(lambda x: round(x[0] / x[1], 2)).collect()
       for record in sorted(self.averageByAge): print(f"Age: {record[0]}, Average of friends by the age {record[1]}")
+      
+   def underHundret(self):
+      self.belowHundret = self.friendsByAge.filter(lambda x: x[1] < 100).collect()
+      for record in sorted(self.belowHundret): print(f"Age: {record[0]}, Average of friends by the age {record[1]}")
+      
