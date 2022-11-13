@@ -1,5 +1,5 @@
-from rdd import Friends
+from rddExample import Friends
 
 friends = Friends()
 friends.averageByAge()
-friends.underHundret()
+friends.underHundred()
