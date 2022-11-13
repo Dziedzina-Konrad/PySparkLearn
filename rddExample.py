@@ -27,4 +27,7 @@ class Friends:
    def underHundred(self):
       self.belowHundred = self.friendsByAge.filter(lambda x: x[1] < 100).collect()
       for record in sorted(self.belowHundred): print(f"Name: {record[2]}, age: {record[0]}, friends by the age {record[1]}")
-      
+   
+   def minFriendsByAge(self):
+      minFriends =  self.friendsByAge.map(lambda x: (x[0], x[1])).reduceByKey(lambda x, y: min(x,y)).collect()
+      for record in sorted(minFriends): print(f"Age: {record[0]}, min friends {record[1]}")
