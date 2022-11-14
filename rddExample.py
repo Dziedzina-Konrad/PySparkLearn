@@ -2,7 +2,7 @@ from pyspark import SparkConf, SparkContext
 from os import getcwd
 
 def parseLine(line):
-   """ Function return age and number of friends """
+   """ Function return age, number of friends and name of record """
    line = line.split(',')
    return (int(line[2]), int(line[3]), line[1])
 
