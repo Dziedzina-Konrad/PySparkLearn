@@ -1,5 +1,6 @@
-from pyspark.sql import SparkSession, Row
+from pyspark.sql import SparkSession, Row, functions as func
 from os import getcwd
+
 
 def mapper(line):
    fields = line.split(',')
@@ -20,4 +21,9 @@ class FriendsSql:
       self.spark.sql(f"SELECT * FROM friends WHERE Age BETWEEN {ageFrom} AND {ageTo} ORDER BY Age").show(100)
    
    def averageFriendsByAge(self):
-      self.schemaFriends.groupBy('Age').avg('Friends').orderBy('Age').show(50)
+      self.schemaFriends.groupBy(
+         'Age').agg(
+            func.round(
+               func.avg(
+                  'Friends'),2)
+            ).orderBy('Age').show(50)
