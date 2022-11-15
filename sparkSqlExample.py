@@ -8,16 +8,15 @@ def mapper(line):
                Age=int(fields[2]),
                Friends=int(fields[3]))
 
-spark = SparkSession.builder.appName("SqlExample").getOrCreate()
+class FriendsSql:
+   def __init__(self):
+      self.spark = SparkSession.builder.appName("SqlExample").getOrCreate()
+      self.lines = self.spark.sparkContext.textFile(getcwd() + "/Datasets/fakefriends.csv")
+      self.friends = self.lines.map(mapper)
 
-lines = spark.sparkContext.textFile(getcwd() + "/Datasets/fakefriends.csv")
-friends = lines.map(mapper)
+   def ageBetween(self, ageFrom = 13, ageTo=18):
+      self.schemaFriends = self.spark.createDataFrame(self.friends).cache()
+      self.schemaFriends.createOrReplaceTempView("friends")
 
-schemaFriends = spark.createDataFrame(friends).cache()
-schemaFriends.createOrReplaceTempView("friends")
-
-teenagers = spark.sql("SELECT * FROM friends WHERE Age BETWEEN 13 AND 19")
-
-for teen in teenagers.collect():
-   print(teen)
-spark.stop()
+      self.teenagers = self.spark.sql(f"SELECT * FROM friends WHERE Age BETWEEN {ageFrom} AND {ageTo} ORDER BY Age").show(100)
+      self.spark.stop()
