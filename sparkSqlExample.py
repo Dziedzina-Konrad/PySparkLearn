@@ -13,10 +13,11 @@ class FriendsSql:
       self.spark = SparkSession.builder.appName("SqlExample").getOrCreate()
       self.lines = self.spark.sparkContext.textFile(getcwd() + "/Datasets/fakefriends.csv")
       self.friends = self.lines.map(mapper)
-
-   def ageBetween(self, ageFrom = 13, ageTo=18):
       self.schemaFriends = self.spark.createDataFrame(self.friends).cache()
       self.schemaFriends.createOrReplaceTempView("friends")
 
-      self.teenagers = self.spark.sql(f"SELECT * FROM friends WHERE Age BETWEEN {ageFrom} AND {ageTo} ORDER BY Age").show(100)
-      self.spark.stop()
+   def ageBetween(self, ageFrom = 13, ageTo=18):
+      self.spark.sql(f"SELECT * FROM friends WHERE Age BETWEEN {ageFrom} AND {ageTo} ORDER BY Age").show(100)
+   
+   def averageFriendsByAge(self):
+      self.schemaFriends.groupBy('Age').avg('Friends').orderBy('Age').show(50)

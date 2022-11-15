@@ -9,3 +9,5 @@ friends.minFriendsByAge()
 '''
 friendsSql = FriendsSql()
 friendsSql.ageBetween(ageTo=25)
+friendsSql.averageFriendsByAge()
+friendsSql.spark.stop()
