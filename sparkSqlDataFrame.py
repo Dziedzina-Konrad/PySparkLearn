@@ -11,3 +11,5 @@ schema = StructType([
 
 spark = SparkSession.builder.appName('tempMeasures').getOrCreate()
 df = spark.read.schema(schema).csv(getcwd() + '/Datasets/1800.csv')
+df.createOrReplaceTempView('stationTemp')
+spark.sql('SELECT * FROM stationTemp').show(50)
