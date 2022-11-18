@@ -9,10 +9,14 @@ schema = StructType([
                   StructField("Temp", IntegerType(), True)
                   ])
 
-spark = SparkSession.builder.appName('tempMeasures').getOrCreate()
-df = spark.read.schema(schema).csv(getcwd() + '/Datasets/1800.csv')
-df.createOrReplaceTempView('stationTemp')
-spark.sql('''SELECT DISTINCT Station, 
+class SparkSql:
+   def __init__(self):
+      self.spark = SparkSession.builder.appName('tempMeasures').getOrCreate()
+      df = self.spark.read.schema(schema).csv(getcwd() + '/Datasets/1800.csv')
+      df.createOrReplaceTempView('stationTemp')
+      
+   def minMaxTemp(self):
+      self.spark.sql('''SELECT DISTINCT Station, 
           Measures, 
           MIN(Temp) OVER(PARTITION BY Station, Measures) AS MinTemp,
           MAX(Temp) OVER(PARTITION BY Station, Measures) AS MaxTemp,
