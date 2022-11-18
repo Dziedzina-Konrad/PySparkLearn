@@ -26,8 +26,10 @@ class Friends:
       
    def underAge(self, age = 100):
       """ Return all friends under selected age. Default  100 """
-      self.belowHundred = self.friendsByAge.filter(lambda x: x[1] < age).collect()
-      for record in sorted(self.belowHundred): print(f"Name: {record[2]}, age: {record[0]}, friends: {record[1]}")
+      if type(age) != int:
+         raise TypeError("Age can only be a int.")
+      self.underAge = self.friendsByAge.filter(lambda x: x[1] < age).collect()
+      for record in sorted(self.underAge): print(f"Name: {record[2]}, age: {record[0]}, friends: {record[1]}")
    
    def minFriendsByAge(self):
       """ Return minimum of friends by age. """
