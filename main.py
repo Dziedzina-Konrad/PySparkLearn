@@ -11,6 +11,8 @@ friendsSql.ageBetween(ageTo=25)
 friendsSql.averageFriendsByAge()
 friendsSql.spark.stop()
 '''
+friends = Friends()
+friends.underAge(50)
 
 example = SparkSql()
 example.minMaxTemp()

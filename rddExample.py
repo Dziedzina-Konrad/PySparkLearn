@@ -24,10 +24,12 @@ class Friends:
       self.averageByAge = totalByAge.reduceByKey(lambda x, y: (x[0] + y[0], x[1] + y[1])).mapValues(lambda x: round(x[0] / x[1], 2)).collect()
       for record in sorted(self.averageByAge): print(f"Age: {record[0]}, Average of friends by the age {record[1]}")
       
-   def underHundred(self):
-      self.belowHundred = self.friendsByAge.filter(lambda x: x[1] < 100).collect()
-      for record in sorted(self.belowHundred): print(f"Name: {record[2]}, age: {record[0]}, friends by the age {record[1]}")
+   def underAge(self, age = 100):
+      """ Return all friends under selected age. Default  100 """
+      self.belowHundred = self.friendsByAge.filter(lambda x: x[1] < age).collect()
+      for record in sorted(self.belowHundred): print(f"Name: {record[2]}, age: {record[0]}, friends: {record[1]}")
    
    def minFriendsByAge(self):
+      """ Return minimum of friends by age. """
       minFriends =  self.friendsByAge.map(lambda x: (x[0], x[1])).reduceByKey(lambda x, y: min(x,y)).collect()
       for record in sorted(minFriends): print(f"Age: {record[0]}, min friends {record[1]}")
